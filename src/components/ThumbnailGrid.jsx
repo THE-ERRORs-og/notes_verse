@@ -1,20 +1,16 @@
 import React, { useState } from "react";
+import { useNotes } from "../context/NotesContext"; // Import the context
 import Pagination from "../components/Pagination";
 
 function ThumbnailGrid() {
+  const { notes, loading, error } = useNotes(); // Fetch notes from the context
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8;
 
-  const notes = [
-    { id: 1, title: "Math Notes", thumbnail: "path-to-thumbnail1.jpg" },
-    { id: 2, title: "Physics Notes", thumbnail: "path-to-thumbnail2.jpg" },
-    { id: 3, title: "Chemistry Notes", thumbnail: "path-to-thumbnail3.jpg" },
-    { id: 4, title: "Programming Notes", thumbnail: "path-to-thumbnail4.jpg" },
-    // Add more notes here
-  ];
-
+  // Calculate total pages based on the number of notes
   const totalPages = Math.ceil(notes.length / itemsPerPage);
 
+  // Determine the notes to display on the current page
   const currentNotes = notes.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
@@ -23,6 +19,9 @@ function ThumbnailGrid() {
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
+
+  if (loading) return <div>Loading...</div>; // Show loading state
+  if (error) return <div>Error: {error}</div>; // Show error state
 
   return (
     <div>
@@ -33,12 +32,14 @@ function ThumbnailGrid() {
             className="bg-gray-800 rounded overflow-hidden shadow-lg hover:scale-105 transition-transform"
           >
             <img
-              src={note.thumbnail}
-              alt={note.title}
+              src={note.thumbnail || "path-to-default-thumbnail.jpg"} // Use default thumbnail if not available
+              alt={note.name || "Note"}
               className="w-full h-48 object-cover"
             />
             <div className="p-4 text-center">
-              <h2 className="text-lg font-semibold text-white">{note.title}</h2>
+              <h2 className="text-lg font-semibold text-white">
+                {note.name || "Unnamed Note"}
+              </h2>
             </div>
           </div>
         ))}

@@ -56,7 +56,7 @@ function AdminUpload() {
         return;
       }
 
-      const fileURL = `${SUPABASE_URL}/storage/v1/object/public/${fileData.path}`;
+      const fileURL = `${SUPABASE_URL}/storage/v1/object/public/${fileData.fullPath}`;
 
       // Upload thumbnail to Supabase
       let thumbnailURL = "";
@@ -72,7 +72,7 @@ function AdminUpload() {
           return;
         }
 
-        thumbnailURL = `${SUPABASE_URL}/storage/v1/object/public/${thumbData.path}`;
+        thumbnailURL = `${SUPABASE_URL}/storage/v1/object/public/${thumbData.fullPath}`;
       }
 
       // Upload secondary thumbnails to Supabase
@@ -96,7 +96,7 @@ function AdminUpload() {
         }
 
         secThumbnailURLs.push(
-          `${SUPABASE_URL}/storage/v1/object/public/${secThumbData.path}`
+          `${SUPABASE_URL}/storage/v1/object/public/${secThumbData.fullPath}`
         );
       }
 
